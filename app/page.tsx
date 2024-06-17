@@ -18,8 +18,7 @@ function Login() {
     username: "",
   };
   const dispatch = useAppDispatch();
-  const userDetails = useAppSelector((state) => state.users);
-  console.log("first", userDetails);
+
   const submitFormhandler = (
     values: LoginFormVariables,
     { resetForm }: { resetForm: () => void }

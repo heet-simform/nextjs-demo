@@ -11,12 +11,6 @@ export default function RootLayout({
 }) {
   return (
     <html>
-      <head>
-        <link
-          href="https://fonts.googleapis.com/icon?family=Material+Icons"
-          rel="stylesheet"
-        />
-      </head>
       <body>
         <Provider store={store}>{children}</Provider>
       </body>

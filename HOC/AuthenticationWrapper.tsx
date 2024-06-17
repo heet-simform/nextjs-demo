@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { updateUserDetails } from "@/redux/users/userReducer";
 import { useRouter, usePathname } from "next/navigation";
+import { getBlogData } from "@/redux/blogs/blogReducer";
 
 function AuthenticationWrapper<T extends object>(
   WrapperComponent: React.FC<T>
@@ -11,28 +12,49 @@ function AuthenticationWrapper<T extends object>(
 
     const pathname = usePathname();
 
-    const userDataFromReduxStore = useAppSelector((state) => state.users.users);
+    const userDataFromReduxStore = useAppSelector((state) => state.users);
+    const blogDataFromReduxStore = useAppSelector((state) => state.blogs.blogs);
 
     const dispatch = useAppDispatch();
 
-    const parseUsersDetailsFromLocalStorage = JSON.parse(
-      localStorage.getItem("currentUser") || "{}"
-    );
+    useEffect(() => {
+      const parseUsersDetailsFromLocalStorage = JSON.parse(
+        localStorage?.getItem?.("currentUser") || "{}"
+      );
 
-    // navigate to login page if user details is not available in the local storage.
-    if (
-      Object.keys(parseUsersDetailsFromLocalStorage).length === 0 ||
-      !parseUsersDetailsFromLocalStorage.username
-    ) {
-      router.push("/");
-    }
-    // user details is available in the local storage but not in the redux store ,
-    // if user has visited the login page then navigate to blog page,
-    // otherwise redirect to the current pathname ,
-    else if (!userDataFromReduxStore.username) {
-      dispatch(updateUserDetails(parseUsersDetailsFromLocalStorage));
+      const parseBlogDetailsFromLocalStorage = JSON.parse(
+        localStorage?.getItem?.("blogs") || "null"
+      );
+
+      // navigate to login page if user details is not available in the local storage.
+      if (
+        Object.keys(parseUsersDetailsFromLocalStorage).length === 0 ||
+        !parseUsersDetailsFromLocalStorage.username
+      ) {
+        router.push("/");
+        return;
+      }
+      // user details is available in the local storage but not in the redux store ,
+      // if user has visited the login page then navigate to blog page,
+      // otherwise redirect to the current pathname ,
+      if (!userDataFromReduxStore?.username) {
+        dispatch(updateUserDetails(parseUsersDetailsFromLocalStorage));
+      }
+      // blog details is available in the local storage but not in the redux store.
+      if (
+        Array.isArray(blogDataFromReduxStore) &&
+        blogDataFromReduxStore.length === 0
+      ) {
+        dispatch(getBlogData(parseBlogDetailsFromLocalStorage));
+      }
       router.push(pathname === "/" ? "/blog" : pathname);
-    }
+    }, [
+      userDataFromReduxStore,
+      dispatch,
+      pathname,
+      router,
+      blogDataFromReduxStore,
+    ]);
 
     return <WrapperComponent {...props} />;
   }
