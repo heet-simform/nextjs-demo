@@ -1,6 +1,5 @@
 "use client";
 
-import AuthenticationWrapper from "@/HOC/AuthenticationWrapper";
 import BlogList from "@/components/BlogList";
 import { useAppSelector } from "@/redux/hooks";
 import Link from "next/link";
@@ -26,4 +25,4 @@ function Blog() {
   );
 }
 
-export default AuthenticationWrapper(Blog);
+export default Blog;
