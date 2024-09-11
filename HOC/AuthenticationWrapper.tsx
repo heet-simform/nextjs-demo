@@ -43,18 +43,14 @@ function AuthenticationWrapper<T extends object>(
       // blog details is available in the local storage but not in the redux store.
       if (
         Array.isArray(blogDataFromReduxStore) &&
-        blogDataFromReduxStore.length === 0
+        blogDataFromReduxStore.length === 0 &&
+        parseBlogDetailsFromLocalStorage &&
+        parseBlogDetailsFromLocalStorage?.length > 0
       ) {
         dispatch(getBlogData(parseBlogDetailsFromLocalStorage));
       }
       router.push(pathname === "/" ? "/blog" : pathname);
-    }, [
-      userDataFromReduxStore,
-      dispatch,
-      pathname,
-      router,
-      blogDataFromReduxStore,
-    ]);
+    }, [userDataFromReduxStore, pathname, router, blogDataFromReduxStore]);
 
     return <WrapperComponent {...props} />;
   }

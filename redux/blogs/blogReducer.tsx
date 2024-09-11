@@ -4,7 +4,7 @@ export type blogData = {
   title: string;
   description: string;
   image: string | null;
-  id: string | null;
+  id: string;
   blogId: string;
 };
 
@@ -28,8 +28,14 @@ const blogSlice = createSlice({
     getBlogData: (state, action: PayloadAction<blogData[]>) => {
       state.blogs = action.payload;
     },
+    deleteBlog: (state, action: PayloadAction<{ id: string }>) => {
+      const updatedBlogs = [
+        ...state.blogs.filter((blog) => blog.blogId != action.payload.id),
+      ];
+      state.blogs = updatedBlogs;
+    },
   },
 });
 
-export const { addBlogDetails, getBlogData } = blogSlice.actions;
+export const { addBlogDetails, getBlogData, deleteBlog } = blogSlice.actions;
 export default blogSlice.reducer;

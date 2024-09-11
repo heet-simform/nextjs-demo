@@ -1,12 +1,12 @@
 "use client";
 
 import BlogList from "@/components/BlogList";
+import AuthenticationWrapper from "@/HOC/AuthenticationWrapper";
 import { useAppSelector } from "@/redux/hooks";
 import Link from "next/link";
 
 function Blog() {
   const blogs = useAppSelector((state) => state.blogs.blogs);
-
   return (
     <div className="bg-gray-900 h-screen">
       <div className="h-16 border-b-2">
@@ -25,4 +25,4 @@ function Blog() {
   );
 }
 
-export default Blog;
+export default AuthenticationWrapper(Blog);

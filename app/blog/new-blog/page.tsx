@@ -34,7 +34,7 @@ function CreateBlog() {
       title: values.title,
       description: values.description,
       image: values.fileData ? URL.createObjectURL(values.fileData) : null,
-      id: userData.id,
+      id: userData.id || "",
       blogId: v4(),
     };
     const BlogData = JSON.parse(localStorage.getItem("blogs") || "[]");

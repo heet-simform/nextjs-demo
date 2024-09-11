@@ -2,12 +2,12 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 type userState = {
   id: string | null;
-  username: string | null;
+  username: string;
 };
 
 const initialState: userState = {
   id: null,
-  username: null,
+  username: "",
 };
 
 const userSlice = createSlice({
